@@ -31,7 +31,7 @@ public class DbInit {
         return employees;
     }
 
-    public static List<Employee> initFromFile() throws IOException {
+    public static List<Employee> initFromFile() {
 
 
         List<Employee> employees = new ArrayList<>();
