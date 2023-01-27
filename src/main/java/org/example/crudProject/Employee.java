@@ -1,5 +1,7 @@
 package org.example.crudProject;
 
+import java.util.Arrays;
+
 /**
  * @author Sergii Bugaienko
  */
@@ -18,6 +20,17 @@ public class Employee {
         this.salary = salary;
         this.age = age;
         this.id = ++currentId;
+    }
+
+    public Employee(String[] args) {
+        if (args.length == 4) {
+            this.name = args[0];
+            this.position = args[1];
+            this.salary = Integer.parseInt(args[2]);
+            this.age = Integer.parseInt(args[3]);
+            this.id = ++currentId;
+        }
+
     }
 
     public String getName() {
