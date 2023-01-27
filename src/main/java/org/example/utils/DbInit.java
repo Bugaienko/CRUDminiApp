@@ -12,33 +12,20 @@ import java.util.*;
  */
 
 public class DbInit {
-    private final static String fileDbName = "db5.txt";
+    private final static String fileDbName = "DB.base";
     private final static String fileInitTxt = "initDB";
-
-    public static List<Employee> init() {
-        List<Employee> employees = new ArrayList<>();
-        employees.add(new Employee("John", "Boss", 2000, 45));
-        employees.add(new Employee("Gina", "Assistant", 950, 21));
-        employees.add(new Employee("Svetlana", "CafeMaker", 950, 20));
-        employees.add(new Employee("Johanna", "Front-end prog", 1700, 25));
-        employees.add(new Employee("Tomas", "Back-end prog", 1800, 28));
-        employees.add(new Employee("Tomara", "Back-end prog", 1750, 23));
-        employees.add(new Employee("John", "Assistant", 1500, 24));
-
-        return employees;
-    }
 
     public static List<Employee> getEmployeesFromDb() {
         List<Employee> list = new ArrayList<>();
         try {
             File fileDb = connectFile(fileDbName);
             if (fileDb.length() <= 1) {
-                System.out.println("Пустой " + fileDb.length());
+//                System.out.println("Пустой " + fileDb.length());
                 list = initFromFile();
                 saveDb(list);
             } else {
 //                System.out.println(fileDb.length());
-                System.out.println("Не пустой " + fileDb.length());
+//                System.out.println("Не пустой " + fileDb.length());
                 list = readDb();
             }
         } catch (URISyntaxException | IllegalAccessException e) {
