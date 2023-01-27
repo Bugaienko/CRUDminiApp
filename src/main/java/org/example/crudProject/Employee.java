@@ -1,7 +1,6 @@
 package org.example.crudProject;
 
 import java.io.Serializable;
-import java.util.Arrays;
 
 /**
  * @author Sergii Bugaienko
@@ -21,7 +20,7 @@ public class Employee implements Serializable {
         this.salary = salary;
         this.age = age;
         this.id = ++currentId;
-        System.out.println("Создан 0 Empl");
+//        System.out.println("Создан 0 Empl");
     }
 
     public Employee(String[] args) {
@@ -31,19 +30,11 @@ public class Employee implements Serializable {
             this.salary = Integer.parseInt(args[2]);
             this.age = Integer.parseInt(args[3]);
             this.id = ++currentId;
-            System.out.println("Создан Empl STR " + this.id);
+//            System.out.println("Создан Empl STR " + this.id);
         }
 
     }
-    public Employee(Employee emp1) {
-        this.name = emp1.name;
-        this.position = emp1.position;
-        this.salary = emp1.salary;
-        this.age = emp1.age;
-        this.id = emp1.id;
-        currentId++;
-        System.out.println("Создан Empl EMP " + this.id);
-    }
+
 
     public String getName() {
         return name;

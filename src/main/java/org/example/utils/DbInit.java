@@ -37,7 +37,10 @@ public class DbInit {
 
     public static void saveDb(List<Employee> employees) {
 
-        try (FileOutputStream fos = new FileOutputStream(connectFile(fileDbName)); ObjectOutputStream oos = new ObjectOutputStream(fos);) {
+        try (
+                FileOutputStream fos = new FileOutputStream(connectFile(fileDbName));
+                ObjectOutputStream oos = new ObjectOutputStream(fos)
+        ) {
             oos.writeObject(employees);
 
         } catch (URISyntaxException | IllegalAccessException | IOException e) {
