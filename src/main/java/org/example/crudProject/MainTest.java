@@ -14,11 +14,17 @@ import java.util.List;
 public class MainTest {
     public static void main(String[] args) {
         List<Employee> employees = new ArrayList<>();
+        List<Employee> employeesRead = new ArrayList<>();
         try {
             employees = DbInit.initFromFile();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         DataUtil.printListColumn(employees);
+        DbInit.saveDb(employees);
+        employeesRead = DbInit.readDb();
+
+        System.out.println("Read");
+        DataUtil.printListColumn(employeesRead);
     }
 }

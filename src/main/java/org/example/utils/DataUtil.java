@@ -37,8 +37,8 @@ public class DataUtil {
         String position = SCANNER.next();
         int salary = SCANNER.nextInt();
         int age = SCANNER.nextInt();
-        PositionEnum positionEnum = getPosition();
-        System.out.println(positionEnum);
+//        PositionEnum positionEnum = getPosition();
+//        System.out.println(positionEnum);
         return new Employee(name, position, salary, age);
     }
 
@@ -47,8 +47,8 @@ public class DataUtil {
         String position = SCANNER.next();
         int salary = SCANNER.nextInt();
         int age = SCANNER.nextInt();
-        PositionEnum positionEnum = getPosition();
-        System.out.println(positionEnum);
+//        PositionEnum positionEnum = getPosition();
+//        System.out.println(positionEnum);
         return new Employee(null, position, salary, age);
     }
 

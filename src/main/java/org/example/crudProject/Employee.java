@@ -1,12 +1,13 @@
 package org.example.crudProject;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
 /**
  * @author Sergii Bugaienko
  */
 
-public class Employee {
+public class Employee implements Serializable {
     private String name;
     private String position;
     private int salary;
@@ -20,6 +21,7 @@ public class Employee {
         this.salary = salary;
         this.age = age;
         this.id = ++currentId;
+        System.out.println("Создан 0 Empl");
     }
 
     public Employee(String[] args) {
@@ -29,8 +31,18 @@ public class Employee {
             this.salary = Integer.parseInt(args[2]);
             this.age = Integer.parseInt(args[3]);
             this.id = ++currentId;
+            System.out.println("Создан Empl STR " + this.id);
         }
 
+    }
+    public Employee(Employee emp1) {
+        this.name = emp1.name;
+        this.position = emp1.position;
+        this.salary = emp1.salary;
+        this.age = emp1.age;
+        this.id = emp1.id;
+        currentId++;
+        System.out.println("Создан Empl EMP " + this.id);
     }
 
     public String getName() {
@@ -75,6 +87,8 @@ public class Employee {
         return id;
     }
 
+
+
     @Override
     public String toString() {
         return "" + id + " {" +
@@ -83,6 +97,10 @@ public class Employee {
                 ", salary=" + salary +
                 ", age=" + age +
                 '}';
+    }
+
+    public static void setCurrent(int id) {
+        currentId = id;
     }
 
 }

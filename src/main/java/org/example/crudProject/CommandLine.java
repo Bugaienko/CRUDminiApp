@@ -13,7 +13,7 @@ import java.util.Scanner;
 public class CommandLine {
 
     public void exec() {
-        DataBase db = new DataBase(DbInit.initFromFile());
+        DataBase db = new DataBase(DbInit.getEmployeesFromDb());
         Scanner scanner = new Scanner(System.in);
         System.out.println("CRUD app v.12.HW");
 

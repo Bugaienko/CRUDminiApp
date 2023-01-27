@@ -22,12 +22,30 @@ public class DataBase {
 
     public DataBase(List<Employee> employees) {
         this.employees = new ArrayList<>();
-        this.employees.addAll(employees);
         this.indexMap = new HashMap<>();
-//        this.indexMap = new TreeMap<>();
-        for (Employee employee : this.employees) {
-            indexMap.put(employee.getId(), employee);
+
+//        employees.stream().forEach(employee -> {
+//            this.employees.add(employee);
+//            indexMap.put(employee.getId(), employee);
+//        });
+
+        if (!employees.isEmpty()) {
+            int lastId = 0;
+            for (Employee employee : employees) {
+                this.employees.add(employee);
+                lastId = employee.getId();
+                indexMap.put(employee.getId(), employee);
+            }
+            Employee.setCurrent(lastId);
         }
+
+
+//        this.employees.addAll(employees);
+//        this.indexMap = new TreeMap<>();
+
+//        for (Employee employee : this.employees) {
+//            indexMap.put(employee.getId(), employee);
+//        }
     }
 
     public void search() {
@@ -82,6 +100,7 @@ public class DataBase {
     public void create() {
         Employee employee = DataUtil.createEmployee("Create new Employee");
         employees.add(employee);
+        DbInit.saveDb(employees);
         indexMap.put(employee.getId(), employee);
     }
 
@@ -97,6 +116,7 @@ public class DataBase {
             employee.update(tmpEmpl.getPosition(), tmpEmpl.getSalary(), tmpEmpl.getAge());
             System.out.println("Updated " + employee);
         }
+        DbInit.saveDb(employees);
     }
 
     private Employee findById(int id) {
@@ -109,6 +129,7 @@ public class DataBase {
         if (employee != null) {
             employees.remove(employee);
             indexMap.remove(employee.getId());
+            DbInit.saveDb(employees);
             System.out.println("Deleted " + employee);
         }
     }
@@ -592,8 +613,7 @@ public class DataBase {
     }
 
     public void sorting() {
-        String method = DataUtil.getString("Метод сортировки:" +
-                "[n]ame, [p]osition, [s]alary, [a]ge");
+        String method = DataUtil.getString("Метод сортировки:" + "[n]ame, [p]osition, [s]alary, [a]ge");
         String choice = method.trim().toLowerCase().substring(0, 1);
         Comparator<Employee> comparator = null;
         switch (choice) {
