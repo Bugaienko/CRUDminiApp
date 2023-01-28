@@ -49,15 +49,14 @@ public class DataUtil {
         return new Employee(name, position, salary, age);
     }
 
-    public static Employee createEmployeePart(String prompt) {
+    public static EmployeeFields createEmployeePart(String prompt) {
         System.out.println(prompt);
         String position = SCANNER.next();
         int salary = SCANNER.nextInt();
         int age = SCANNER.nextInt();
 
-        EmployeeFields employeeFields = new EmployeeFields(null, position, salary, age);
-
-        return createNewEmployee(employeeFields);
+        return new EmployeeFields(null, position, salary, age);
+//        return createNewEmployee(employeeFields);
     }
 
     private static PositionEnum getPosition() {

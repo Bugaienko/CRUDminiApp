@@ -32,4 +32,13 @@ public class EmployeeFields {
     public int getAge() {
         return age;
     }
+
+    @Override
+    public String toString() {
+        return "{name='" + name + '\'' +
+                ", position='" + position + '\'' +
+                ", salary=" + salary +
+                ", age=" + age +
+                '}';
+    }
 }

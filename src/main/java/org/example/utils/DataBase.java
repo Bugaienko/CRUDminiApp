@@ -6,6 +6,7 @@ package org.example.utils;
 
 
 import org.example.crudProject.Employee;
+import org.example.crudProject.EmployeeFields;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -105,10 +106,15 @@ public class DataBase {
         int searchId = DataUtil.getInt("find by id: ");
         Employee employee = findById(searchId);
         if (employee != null) {
-            Employee tmpEmpl = DataUtil.createEmployeePart("Update: (position, salary, age ");
-            employee.update(tmpEmpl.getPosition(), tmpEmpl.getSalary(), tmpEmpl.getAge());
+            EmployeeFields tmpEmpl = DataUtil.createEmployeePart("Update: (position, salary, age ");
+            updateByFields(employee, tmpEmpl);
             System.out.println("Updated " + employee);
             DbInit.saveDb(employees);
+        }
+    }
+    public void updateByFields(Employee employee, EmployeeFields eF) {
+        if (employee != null) {
+            employee.update(eF);
         }
     }
 

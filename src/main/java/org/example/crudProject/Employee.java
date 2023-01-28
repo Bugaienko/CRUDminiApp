@@ -46,6 +46,22 @@ public class Employee implements Serializable {
         this.age = age;
     }
 
+    public void update(EmployeeFields eF) {
+        if (eF.getName() != null) {
+            this.name = eF.getName();
+        }
+        if (eF.getPosition() != null) {
+            this.position = eF.getPosition();
+        }
+        if (eF.getSalary() > 0) {
+            this.salary = eF.getSalary();
+        }
+        if (eF.getAge() > 0) {
+            this.age = eF.getAge();
+        }
+
+    }
+
     public void setName(String name) {
         this.name = name;
     }
