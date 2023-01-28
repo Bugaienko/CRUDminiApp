@@ -5,6 +5,7 @@ package org.example.utils;
  */
 
 import org.example.crudProject.Employee;
+import org.example.crudProject.EmployeeFields;
 import org.example.crudProject.PositionEnum;
 
 import java.util.List;
@@ -37,9 +38,13 @@ public class DataUtil {
         String position = SCANNER.next();
         int salary = SCANNER.nextInt();
         int age = SCANNER.nextInt();
-        return createNewEmployee(name, position, salary, age);
+        EmployeeFields employeeFields = new EmployeeFields(name, position, salary, age);
+        return createNewEmployee(employeeFields);
     }
 
+    private static Employee createNewEmployee(EmployeeFields eF) {
+        return new Employee(eF.getName(), eF.getPosition(), eF.getSalary(), eF.getAge());
+    }
     private static Employee createNewEmployee(String name, String position, int salary, int age) {
         return new Employee(name, position, salary, age);
     }
@@ -50,7 +55,9 @@ public class DataUtil {
         int salary = SCANNER.nextInt();
         int age = SCANNER.nextInt();
 
-        return createNewEmployee(null, position, salary, age);
+        EmployeeFields employeeFields = new EmployeeFields(null, position, salary, age);
+
+        return createNewEmployee(employeeFields);
     }
 
     private static PositionEnum getPosition() {
