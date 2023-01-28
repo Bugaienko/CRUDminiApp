@@ -12,7 +12,8 @@ import java.util.*;
  */
 
 public class DbInit {
-    private final static String fileDbName = "DB.base";
+    private final static String fileDbName = "DB.test";
+//    private final static String fileDbForTests = "DB.test";
     private final static String fileInitTxt = "initDB";
 
     public static List<Employee> getEmployeesFromDb() {
@@ -24,7 +25,6 @@ public class DbInit {
                 list = initFromFile();
                 saveDb(list);
             } else {
-//                System.out.println(fileDb.length());
 //                System.out.println("Не пустой " + fileDb.length());
                 list = readDb();
             }

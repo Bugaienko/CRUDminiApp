@@ -39,13 +39,6 @@ public class DataBase {
             Employee.setCurrent(lastId);
         }
 
-
-//        this.employees.addAll(employees);
-//        this.indexMap = new TreeMap<>();
-
-//        for (Employee employee : this.employees) {
-//            indexMap.put(employee.getId(), employee);
-//        }
     }
 
     public void search() {
@@ -115,11 +108,11 @@ public class DataBase {
             Employee tmpEmpl = DataUtil.createEmployeePart("Update: (position, salary, age ");
             employee.update(tmpEmpl.getPosition(), tmpEmpl.getSalary(), tmpEmpl.getAge());
             System.out.println("Updated " + employee);
+            DbInit.saveDb(employees);
         }
-        DbInit.saveDb(employees);
     }
 
-    private Employee findById(int id) {
+    public Employee findById(int id) {
         return indexMap.get(id);
     }
 
