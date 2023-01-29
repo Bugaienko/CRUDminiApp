@@ -49,7 +49,6 @@ public class DataBase {
         System.out.println("Выборки по зп: (3)");
         System.out.println("Поиск по имени: (4)");
         System.out.println("Поиск по нескольким условиям: (5)");
-        System.out.println("Тест random List: (6)");
         System.out.println("Выход: (9)");
         int choose = SCANNER.nextInt();
         switch (choose) {
@@ -281,7 +280,7 @@ public class DataBase {
     }
 
 
-    private List<Employee> searchMinAge(int minAge, List<Employee> employeeList) {
+    public List<Employee> searchMinAge(int minAge, List<Employee> employeeList) {
         System.out.println("Search min + employeeList");
         List<Employee> result = new ArrayList<>();
         for (Employee employee : employeeList) {

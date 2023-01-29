@@ -4,7 +4,7 @@ import org.example.utils.DataBase;
 import org.example.utils.DataUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -24,6 +24,14 @@ import java.util.stream.Stream;
 //    при следующем запуске в базе уже перезаписан обновленный Employee. Наверное, это не корректное поведение, когда тест меняет базу?
 //TODO вынести сохранение БД из методов, которые нужно тестировать
 
+    //Третье проблема. Не поддаются тестированию методы, коотрые помечены как приватные. Можно ли как-то обойти? Не хочется делать методы публичными...
+
+
+    // Проюлема 4. Тесты меняют список сотрудников. Например, тест на апдейт затрагивает возраст.
+// И в последующем тесте на выборку по возрасту тяжело прописать "правильные результаты
+    //TODO написать метод восстанавливающий "базу" перед каждым тестом
+    //
+
 public class DataBaseTest {
     private static List<Employee> employees;
     private static DataBase dataBase;
@@ -33,6 +41,15 @@ public class DataBaseTest {
     public static void init() {
         employees = setEmployeesListForTest();
         dataBase = new DataBase(employees);
+    }
+
+    @BeforeEach
+    public void restoreEmployeesList() {
+        List<EmployeeFields> baseFields = startingEmployeesParams();
+        int minLength = Math.min(employees.size(), baseFields.size());
+        for (int i = 0; i < minLength; i++) {
+            dataBase.updateByFields(employees.get(i), baseFields.get(i));
+        }
     }
 
     @ParameterizedTest
@@ -116,6 +133,29 @@ public class DataBaseTest {
         return out.stream();
     }
 
+    @ParameterizedTest
+    @MethodSource("dataForSearchMinAgeTest")
+    public void searchMinAgeTest(int minAge, int rightLength, List<Employee> rightList) {
+        List<Employee> result = dataBase.searchMinAge(minAge, employees);
+        Assertions.assertEquals(result.size(), rightLength);
+        Assertions.assertEquals(result, rightList, "Lists are equals");
+    }
+
+    public static Stream<Arguments> dataForSearchMinAgeTest() {
+        List<Arguments> out = new ArrayList<>();
+        int minAge = 22;
+        int rightLength = 5;
+        List<Employee> rightList = new ArrayList<>();
+        rightList.add(employees.get(0));
+        rightList.add(employees.get(3));
+        rightList.add(employees.get(4));
+        rightList.add(employees.get(5));
+        rightList.add(employees.get(6));
+        out.add(Arguments.arguments(minAge, rightLength, rightList));
+
+        return out.stream();
+    }
+
     private static List<Employee> setEmployeesListForTest() {
         List<Employee> employees1 = new ArrayList<>();
         employees1.add(new Employee("John", "Boss", 2000, 45));
@@ -128,6 +168,19 @@ public class DataBaseTest {
         System.out.println("Employees list for Tests:");
         DataUtil.printListColumn(employees1);
         return employees1;
+    }
+
+    private static List<EmployeeFields> startingEmployeesParams() {
+        List<EmployeeFields> employeeFields = new ArrayList<>();
+        employeeFields.add(new EmployeeFields("John", "Boss", 2000, 45));
+        employeeFields.add(new EmployeeFields("Gina", "Assistant", 950, 21));
+        employeeFields.add(new EmployeeFields("Svetlana", "CafeMaker", 950, 20));
+        employeeFields.add(new EmployeeFields("Johanna", "Front-end prog", 1700, 25));
+        employeeFields.add(new EmployeeFields("Tomas", "Back-end prog", 1800, 28));
+        employeeFields.add(new EmployeeFields("Tomara", "Back-end prog", 1750, 23));
+        employeeFields.add(new EmployeeFields("John", "Assistant", 1500,24));
+
+        return employeeFields;
     }
 
 }
