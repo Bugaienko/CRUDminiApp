@@ -16,6 +16,12 @@ import java.util.stream.Stream;
  * @author Sergii Bugaienko
  */
 
+// В приложение мной была добавлена новая сущность EmployeeFields, являющаяся по сути копией  Employee по содержащимся полям,
+// но сбивающая счетчик id при ее создании.
+
+//    Вторая проблема моего теста. Он работает с "базой данных". Протестировав, например, update Employee -
+//    при следующем запуске в базе уже перезаписан обновленный Employee. Наверное, это не корректное поведение, когда тест меняет базу?
+
 public class DataBaseTest {
     private static List<Employee> employees;
     private static DataBase dataBase;
@@ -77,8 +83,7 @@ public class DataBaseTest {
         return out.stream();
     }
 
-    // При таком подходе у нас проблема. Если "бывшая" должность совпадает с обновляемой долдностью - тест работает не корректно
-    // Т.е. проверка
+    // Второй вариант теста, без использование объекта с верными результати.
     @ParameterizedTest
     @MethodSource("dataForUpdateEmployeeTestV2")
     public  void  updateEmployeeTestV2 (Employee employee, EmployeeFields eF, boolean[] results) {
