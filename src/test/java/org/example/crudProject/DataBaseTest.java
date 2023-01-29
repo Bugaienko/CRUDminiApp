@@ -35,8 +35,8 @@ public class DataBaseTest {
 
     public static Stream<Arguments> dataForSearchingById() {
         List<Arguments> out = new ArrayList<>();
-        out.add(Arguments.arguments((Employee)employees.get(0), 1, true));
-        out.add(Arguments.arguments((Employee)employees.get(5), 4, false));
+        out.add(Arguments.arguments(employees.get(0), 1, true));
+        out.add(Arguments.arguments(employees.get(5), 4, false));
         out.add(Arguments.arguments(new Employee("Serg", "test", 1500, 59), 1, false));
         out.add(Arguments.arguments(new Employee("Serg", "test", 1500, 59), 100, false));
         return out.stream();
@@ -48,8 +48,8 @@ public class DataBaseTest {
         dataBase.updateByFields(employee, eF);
         Assertions.assertEquals(results[0], employee.getName().equals(result.getName()));
         Assertions.assertEquals(results[1], employee.getPosition().equals(result.getPosition()));
-        Assertions.assertEquals(results[0], employee.getSalary() == result.getSalary());
-        Assertions.assertEquals(results[0], employee.getAge() == (result.getAge()));
+        Assertions.assertEquals(results[2], employee.getSalary() == result.getSalary());
+        Assertions.assertEquals(results[3], employee.getAge() == (result.getAge()));
     }
 
     public static Stream<Arguments> dataForUpdateEmployeeTest() {
@@ -65,6 +65,12 @@ public class DataBaseTest {
         EmployeeFields result1 = new EmployeeFields("Sergey", employee1.getPosition(), 2002, 28);
         boolean[] results1 = {true, false, true, true};
         out.add(Arguments.arguments(employee1, ef1, result1, results1));
+
+        EmployeeFields eF2 = new EmployeeFields("Sergey", "", -5, 31);
+        Employee employee2 = employees.get(2);
+        EmployeeFields result2 = new EmployeeFields("Sergey", employee2.getPosition(), employee2.getSalary(), 31);
+        boolean[] results2 = {true, true, true, true};
+        out.add(Arguments.arguments(employee2, eF2, result2, results2));
 
         return out.stream();
     }

@@ -1,6 +1,7 @@
 package org.example.crudProject;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * @author Sergii Bugaienko
@@ -47,10 +48,10 @@ public class Employee implements Serializable {
     }
 
     public void update(EmployeeFields eF) {
-        if (eF.getName() != null) {
+        if (eF.getName() != null && eF.getName().length() > 0 ) {
             this.name = eF.getName();
         }
-        if (eF.getPosition() != null) {
+        if (eF.getPosition() != null && eF.getPosition().length() > 0) {
             this.position = eF.getPosition();
         }
         if (eF.getSalary() > 0) {
