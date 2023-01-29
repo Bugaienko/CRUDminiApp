@@ -11,6 +11,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -46,6 +48,8 @@ public class DataBaseTest {
     @BeforeEach
     public void restoreEmployeesList() {
         List<EmployeeFields> baseFields = startingEmployeesParams();
+        Predicate<Integer> moreThen = i -> (i <= 7);
+        employees = employees.stream().filter(e -> moreThen.test(e.getId())).collect(Collectors.toList());
         int minLength = Math.min(employees.size(), baseFields.size());
         for (int i = 0; i < minLength; i++) {
             dataBase.updateByFields(employees.get(i), baseFields.get(i));
@@ -152,6 +156,12 @@ public class DataBaseTest {
         rightList.add(employees.get(5));
         rightList.add(employees.get(6));
         out.add(Arguments.arguments(minAge, rightLength, rightList));
+
+        int minAge2 = 99;
+        int rightLength2 = 0;
+        List<Employee> rightList2 = new ArrayList<>();
+
+        out.add(Arguments.arguments(minAge2, rightLength2, rightList2));
 
         return out.stream();
     }
