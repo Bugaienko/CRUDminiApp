@@ -55,7 +55,7 @@ public class DataBaseTest {
     @MethodSource("dataForUpdateEmployeeTest")
     public void updateEmployeeTest (Employee employee, EmployeeFields eF, EmployeeFields result, boolean[] results) {
         dataBase.updateByFields(employee, eF);
-        System.out.println(employee);
+//        System.out.println(employee);
         Assertions.assertEquals(results[0], employee.getName().equals(result.getName()));
         Assertions.assertEquals(results[1], employee.getPosition().equals(result.getPosition()));
         Assertions.assertEquals(results[2], employee.getSalary() == result.getSalary());
