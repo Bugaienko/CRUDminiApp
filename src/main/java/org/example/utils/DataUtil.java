@@ -27,9 +27,7 @@ public class DataUtil {
     }
 
     public static void printListColumn(List<Employee> employees) {
-        for (Employee employee : employees) {
-            System.out.println(employee);
-        }
+        employees.stream().forEach(System.out::println);
     }
 
     public static Employee createEmployee(String prompt) {

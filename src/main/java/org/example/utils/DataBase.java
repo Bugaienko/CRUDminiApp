@@ -292,25 +292,25 @@ public class DataBase {
         return result;
     }
 
-    private List<Employee> searchMinAge(int minAge) {
-        List<Employee> result = new ArrayList<>();
-        for (Employee employee : employees) {
-            if (employee.getAge() >= minAge) {
-                result.add(employee);
-            }
-        }
-        return result;
-    }
-
-    private List<Employee> searchMaxAge(int maxAge) {
-        List<Employee> result = new ArrayList<>();
-        for (Employee employee : employees) {
-            if (employee.getAge() <= maxAge) {
-                result.add(employee);
-            }
-        }
-        return result;
-    }
+//    private List<Employee> searchMinAge(int minAge) {
+//        List<Employee> result = new ArrayList<>();
+//        for (Employee employee : employees) {
+//            if (employee.getAge() >= minAge) {
+//                result.add(employee);
+//            }
+//        }
+//        return result;
+//    }
+//
+//    private List<Employee> searchMaxAge(int maxAge) {
+//        List<Employee> result = new ArrayList<>();
+//        for (Employee employee : employees) {
+//            if (employee.getAge() <= maxAge) {
+//                result.add(employee);
+//            }
+//        }
+//        return result;
+//    }
 
     private List<Employee> searchMaxAge(int maxAge, List<Employee> employees) {
         List<Employee> result = new ArrayList<>();
@@ -554,14 +554,19 @@ public class DataBase {
 
     public List<Employee> find() {
         String searchName = DataUtil.getString("Find by Name: ");
+        List<Employee> foundList = find(searchName);
+        DataUtil.printListColumn(foundList);
+        return foundList;
+    }
+
+    public List<Employee> find(String searchString) {
         List<Employee> foundList = new ArrayList<>();
         for (Employee employee : employees) {
-//            if (employee.getName().equalsIgnoreCase(searchName)){
-            if (employee.getName().toLowerCase().contains(searchName.toLowerCase())) {
+//            if (employee.getName().equalsIgnoreCase(searchString)){
+            if (employee.getName().trim().toLowerCase().contains(searchString.toLowerCase())) {
                 foundList.add(employee);
             }
         }
-        DataUtil.printListColumn(foundList);
         return foundList;
     }
 
