@@ -1,6 +1,7 @@
 package org.example.crudProject;
 
 import org.example.utils.DataBase;
+import org.example.utils.DataUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
@@ -21,6 +22,7 @@ import java.util.stream.Stream;
 
 //    Вторая проблема моего теста. Он работает с "базой данных". Протестировав, например, update Employee -
 //    при следующем запуске в базе уже перезаписан обновленный Employee. Наверное, это не корректное поведение, когда тест меняет базу?
+//TODO вынести сохранение БД из методов, которые нужно тестировать
 
 public class DataBaseTest {
     private static List<Employee> employees;
@@ -123,6 +125,8 @@ public class DataBaseTest {
         employees1.add(new Employee("Tomas", "Back-end prog", 1800, 28));
         employees1.add(new Employee("Tomara", "Back-end prog", 1750, 23));
         employees1.add(new Employee("John", "Assistant", 1500,24));
+        System.out.println("Employees list for Tests:");
+        DataUtil.printListColumn(employees1);
         return employees1;
     }
 
