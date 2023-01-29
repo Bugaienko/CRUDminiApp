@@ -3,6 +3,7 @@ package org.example.crudProject;
 import org.example.utils.DataBase;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -46,6 +47,7 @@ public class DataBaseTest {
     @MethodSource("dataForUpdateEmployeeTest")
     public void updateEmployeeTest (Employee employee, EmployeeFields eF, EmployeeFields result, boolean[] results) {
         dataBase.updateByFields(employee, eF);
+        System.out.println(employee);
         Assertions.assertEquals(results[0], employee.getName().equals(result.getName()));
         Assertions.assertEquals(results[1], employee.getPosition().equals(result.getPosition()));
         Assertions.assertEquals(results[2], employee.getSalary() == result.getSalary());
@@ -62,8 +64,8 @@ public class DataBaseTest {
 
         EmployeeFields ef1 = new EmployeeFields("Sergey", "Small Boss", 2002, 28);
         Employee employee1 = employees.get(1);
-        EmployeeFields result1 = new EmployeeFields("Sergey", employee1.getPosition(), 2002, 28);
-        boolean[] results1 = {true, false, true, true};
+        EmployeeFields result1 = new EmployeeFields("Sergey", "Small Boss", 2002, 28);
+        boolean[] results1 = {true, true, true, true};
         out.add(Arguments.arguments(employee1, ef1, result1, results1));
 
         EmployeeFields eF2 = new EmployeeFields("Sergey", "", -5, 31);
@@ -71,6 +73,38 @@ public class DataBaseTest {
         EmployeeFields result2 = new EmployeeFields("Sergey", employee2.getPosition(), employee2.getSalary(), 31);
         boolean[] results2 = {true, true, true, true};
         out.add(Arguments.arguments(employee2, eF2, result2, results2));
+
+        return out.stream();
+    }
+
+    // При таком подходе у нас проблема. Если "бывшая" должность совпадает с обновляемой долдностью - тест работает не корректно
+    // Т.е. проверка
+    @ParameterizedTest
+    @MethodSource("dataForUpdateEmployeeTestV2")
+    public  void  updateEmployeeTestV2 (Employee employee, EmployeeFields eF, boolean[] results) {
+        dataBase.updateByFields(employee, eF);
+        Assertions.assertEquals(results[0], employee.getName().equals(eF.getName()));
+        Assertions.assertEquals(results[1], employee.getPosition().equals(eF.getPosition()));
+        Assertions.assertEquals(results[2], employee.getSalary() == eF.getSalary());
+        Assertions.assertEquals(results[3], employee.getAge() == eF.getAge());
+    }
+
+    public static Stream<Arguments> dataForUpdateEmployeeTestV2() {
+        List<Arguments> out = new ArrayList<>();
+        EmployeeFields eF = new EmployeeFields(null, "BigBoss", 2001, 44);
+        Employee employee = employees.get(0);
+        boolean[] results = {false, true, true, true};
+        out.add(Arguments.arguments(employee, eF, results));
+
+        EmployeeFields ef1 = new EmployeeFields("Sergey", "Small Boss", 2002, 28);
+        Employee employee1 = employees.get(1);
+        boolean[] results1 = {true, true, true, true};
+        out.add(Arguments.arguments(employee1, ef1,  results1));
+
+        EmployeeFields eF2 = new EmployeeFields("Sergey", "", -5, 31);
+        Employee employee2 = employees.get(2);
+        boolean[] results2 = {true, false, false, true};
+        out.add(Arguments.arguments(employee2, eF2,  results2));
 
         return out.stream();
     }
