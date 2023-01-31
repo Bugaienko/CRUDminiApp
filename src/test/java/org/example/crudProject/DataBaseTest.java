@@ -5,6 +5,7 @@ import org.example.utils.DataUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -46,6 +47,8 @@ public class DataBaseTest {
         dataBase = new DataBase(employees);
     }
 
+
+
     @BeforeEach
     public void restoreEmployeesList() {
         List<EmployeeFields> baseFields = startingEmployeesParams();
@@ -64,15 +67,6 @@ public class DataBaseTest {
         Assertions.assertEquals(result, target.equals(findedEmployee));
     }
 
-    public static Stream<Arguments> dataForSearchingById() {
-        List<Arguments> out = new ArrayList<>();
-        out.add(Arguments.arguments(employees.get(0), 1, true));
-        out.add(Arguments.arguments(employees.get(5), 4, false));
-        out.add(Arguments.arguments(new Employee("Serg", "test", 1500, 59), 1, false));
-        out.add(Arguments.arguments(new Employee("Serg", "test", 1500, 59), 100, false));
-        return out.stream();
-    }
-
     @ParameterizedTest
     @MethodSource("dataForUpdateEmployeeTest")
     public void updateEmployeeTest (Employee employee, EmployeeFields eF, EmployeeFields result, boolean[] results) {
@@ -84,6 +78,54 @@ public class DataBaseTest {
         Assertions.assertEquals(results[3], employee.getAge() == (result.getAge()));
     }
 
+
+    // Второй вариант теста, без использование объекта с верными результати.
+    @ParameterizedTest
+    @MethodSource("dataForUpdateEmployeeTestV2")
+    public  void  updateEmployeeTestV2 (Employee employee, EmployeeFields eF, boolean[] results) {
+        dataBase.updateByFields(employee, eF);
+        Assertions.assertEquals(results[0], employee.getName().equals(eF.getName()));
+        Assertions.assertEquals(results[1], employee.getPosition().equals(eF.getPosition()));
+        Assertions.assertEquals(results[2], employee.getSalary() == eF.getSalary());
+        Assertions.assertEquals(results[3], employee.getAge() == eF.getAge());
+    }
+
+    @ParameterizedTest
+    @MethodSource("dataForCreateNewEmployeeTest")
+    public void createNewEmployeeTest(EmployeeFields eFTarget) {
+        int lastId = employees.get(employees.size()-1).getId();
+        Employee newEmployee = DataUtil.createNewEmployee(eFTarget);
+//        Employee.setCurrent(newEmployee.getId()-1);
+        Assertions.assertTrue(lastId < newEmployee.getId(), "Id passed");
+        Assertions.assertEquals(newEmployee.getName(), eFTarget.getName(), "Name passed");
+        Assertions.assertEquals(newEmployee.getPosition(), eFTarget.getPosition(), "Position passed");
+        Assertions.assertTrue(newEmployee.getSalary() == eFTarget.getSalary(), "Salary passed");
+        Assertions.assertTrue(newEmployee.getAge() == eFTarget.getAge(), "Age passed");
+    }
+
+    @Test
+    public void createNullNewEmployeeTest() {
+        EmployeeFields efNull = null;
+        Assertions.assertThrows(NullPointerException.class, () -> DataUtil.createNewEmployee(efNull));
+    }
+
+
+    @ParameterizedTest
+    @MethodSource("dataForSearchMinAgeTest")
+    public void searchMinAgeTest(int minAge, int rightLength, List<Employee> rightList) {
+        List<Employee> result = dataBase.searchMinAge(minAge, employees);
+        Assertions.assertEquals(result.size(), rightLength);
+        Assertions.assertEquals(result, rightList, "Lists are equals");
+    }
+
+    public static Stream<Arguments> dataForSearchingById() {
+        List<Arguments> out = new ArrayList<>();
+        out.add(Arguments.arguments(employees.get(0), 1, true));
+        out.add(Arguments.arguments(employees.get(5), 4, false));
+        out.add(Arguments.arguments(new Employee("Serg", "test", 1500, 59), 1, false));
+        out.add(Arguments.arguments(new Employee("Serg", "test", 1500, 59), 100, false));
+        return out.stream();
+    }
     public static Stream<Arguments> dataForUpdateEmployeeTest() {
         List<Arguments> out = new ArrayList<>();
         EmployeeFields eF = new EmployeeFields(null, "BigBoss", 2001, 44);
@@ -107,16 +149,7 @@ public class DataBaseTest {
         return out.stream();
     }
 
-    // Второй вариант теста, без использование объекта с верными результати.
-    @ParameterizedTest
-    @MethodSource("dataForUpdateEmployeeTestV2")
-    public  void  updateEmployeeTestV2 (Employee employee, EmployeeFields eF, boolean[] results) {
-        dataBase.updateByFields(employee, eF);
-        Assertions.assertEquals(results[0], employee.getName().equals(eF.getName()));
-        Assertions.assertEquals(results[1], employee.getPosition().equals(eF.getPosition()));
-        Assertions.assertEquals(results[2], employee.getSalary() == eF.getSalary());
-        Assertions.assertEquals(results[3], employee.getAge() == eF.getAge());
-    }
+
 
     public static Stream<Arguments> dataForUpdateEmployeeTestV2() {
         List<Arguments> out = new ArrayList<>();
@@ -138,13 +171,7 @@ public class DataBaseTest {
         return out.stream();
     }
 
-    @ParameterizedTest
-    @MethodSource("dataForSearchMinAgeTest")
-    public void searchMinAgeTest(int minAge, int rightLength, List<Employee> rightList) {
-        List<Employee> result = dataBase.searchMinAge(minAge, employees);
-        Assertions.assertEquals(result.size(), rightLength);
-        Assertions.assertEquals(result, rightList, "Lists are equals");
-    }
+
 
     public static Stream<Arguments> dataForSearchMinAgeTest() {
         List<Arguments> out = new ArrayList<>();
@@ -163,6 +190,15 @@ public class DataBaseTest {
         List<Employee> rightList2 = new ArrayList<>();
 
         out.add(Arguments.arguments(minAge2, rightLength2, rightList2));
+
+        return out.stream();
+    }
+
+    public static Stream<Arguments> dataForCreateNewEmployeeTest() {
+        List<Arguments> out = new ArrayList<>();
+        out.add(Arguments.arguments(new EmployeeFields("TestCreat", "tester", 1455, 18)));
+        out.add(Arguments.arguments(new EmployeeFields("Test Creat", "tester boss", 2800, 25)));
+        out.add(Arguments.arguments(new EmployeeFields("Test Creat", null, 2800, 25)));
 
         return out.stream();
     }

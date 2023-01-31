@@ -40,9 +40,16 @@ public class DataUtil {
         return createNewEmployee(employeeFields);
     }
 
-    private static Employee createNewEmployee(EmployeeFields eF) {
-        return new Employee(eF.getName(), eF.getPosition(), eF.getSalary(), eF.getAge());
+    public static Employee createNewEmployee(EmployeeFields eF) throws NullPointerException {
+        if (eF != null) {
+            return new Employee(eF);
+//            return new Employee(eF.getName(), eF.getPosition(), eF.getSalary(), eF.getAge());
+        } else {
+            throw new NullPointerException("Null eF!");
+        }
+
     }
+
     private static Employee createNewEmployee(String name, String position, int salary, int age) {
         return new Employee(name, position, salary, age);
     }

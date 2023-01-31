@@ -91,12 +91,17 @@ public class DataBase {
     }
 
     public void create() {
-        Employee employee = DataUtil.createEmployee("Create new Employee");
-        if (employee != null) {
-            employees.add(employee);
-            DbInit.saveDb(employees);
-            indexMap.put(employee.getId(), employee);
+        try {
+            Employee employee = DataUtil.createEmployee("Create new Employee");
+            if (employee != null) {
+                employees.add(employee);
+                DbInit.saveDb(employees);
+                indexMap.put(employee.getId(), employee);
+            }
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
+
     }
 
     public void read() {
@@ -284,7 +289,7 @@ public class DataBase {
 
 
     public List<Employee> searchMinAge(int minAge, List<Employee> employeeList) {
-        System.out.println("Search min + employeeList");
+//        System.out.println("Search min + employeeList");
         List<Employee> result = new ArrayList<>();
         for (Employee employee : employeeList) {
             if (employee.getAge() >= minAge) {

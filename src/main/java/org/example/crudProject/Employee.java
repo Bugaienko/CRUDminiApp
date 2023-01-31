@@ -24,6 +24,14 @@ public class Employee implements Serializable {
 //        System.out.println("Создан 0 Empl");
     }
 
+    public Employee(EmployeeFields ef) {
+        this.name = ef.getName();
+        this.position = ef.getPosition();
+        this.salary = ef.getSalary();
+        this.age = ef.getAge();
+        this.id = ++currentId;
+    }
+
     public Employee(String[] args) {
         if (args.length == 4) {
             this.name = args[0];
