@@ -132,11 +132,19 @@ public class DataBase {
     public void delete() {
         int searchId = DataUtil.getInt("Delete by id: ");
         Employee employee = findById(searchId);
+        delete(employee);
+        DbInit.saveDb(employees);
+        System.out.println("Deleted " + employee);
+
+    }
+
+    public int delete(Employee employee) {
         if (employee != null) {
             employees.remove(employee);
             indexMap.remove(employee.getId());
-            DbInit.saveDb(employees);
-            System.out.println("Deleted " + employee);
+            return employee.getId();
+        } else {
+            throw new NullPointerException("Empl is null");
         }
     }
 

@@ -49,6 +49,7 @@ public class DataBaseTest {
 
 
 
+
     @BeforeEach
     public void restoreEmployeesList() {
         List<EmployeeFields> baseFields = startingEmployeesParams();
@@ -108,6 +109,24 @@ public class DataBaseTest {
         EmployeeFields efNull = null;
         Assertions.assertThrows(NullPointerException.class, () -> DataUtil.createNewEmployee(efNull));
     }
+
+    @ParameterizedTest
+    @MethodSource("dataForDeleteSearch")
+    public void deleteTest(int idSearch, boolean result){
+        Employee employeeSearch = dataBase.findById(idSearch);
+        Assertions.assertEquals(result, dataBase.delete(employeeSearch) == idSearch);
+
+    }
+
+    public static Stream<Arguments> dataForDeleteSearch() {
+        List<Arguments> out = new ArrayList<>();
+        out.add(Arguments.arguments(7, true));
+        out.add(Arguments.arguments(28, false));
+        //TODO тест на NullPointer добавить
+
+        return out.stream();
+    }
+
 
 
     @ParameterizedTest
