@@ -92,9 +92,11 @@ public class DataBase {
 
     public void create() {
         Employee employee = DataUtil.createEmployee("Create new Employee");
-        employees.add(employee);
-        DbInit.saveDb(employees);
-        indexMap.put(employee.getId(), employee);
+        if (employee != null) {
+            employees.add(employee);
+            DbInit.saveDb(employees);
+            indexMap.put(employee.getId(), employee);
+        }
     }
 
     public void read() {
@@ -111,6 +113,7 @@ public class DataBase {
             DbInit.saveDb(employees);
         }
     }
+
     public void updateByFields(Employee employee, EmployeeFields eF) {
         if (employee != null) {
             employee.update(eF);
