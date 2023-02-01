@@ -115,14 +115,26 @@ public class DataBaseTest {
     public void deleteTest(int idSearch, boolean result){
         Employee employeeSearch = dataBase.findById(idSearch);
         Assertions.assertEquals(result, dataBase.delete(employeeSearch) == idSearch);
+        DataUtil.printListColumn(employees);
 
+    }
+    @ParameterizedTest
+    @MethodSource("dataForDeleteNullSearch")
+    public void deleteNullTest(int idSearch) {
+        Employee employeeSearch = dataBase.findById(idSearch);
+        Assertions.assertThrows(NullPointerException.class, () -> dataBase.delete(employeeSearch));
     }
 
     public static Stream<Arguments> dataForDeleteSearch() {
         List<Arguments> out = new ArrayList<>();
         out.add(Arguments.arguments(7, true));
-        out.add(Arguments.arguments(28, false));
-        //TODO тест на NullPointer добавить
+
+        return out.stream();
+    }
+
+    public static Stream<Arguments> dataForDeleteNullSearch() {
+        List<Arguments> out = new ArrayList<>();
+        out.add(Arguments.arguments(99, false));
 
         return out.stream();
     }
