@@ -100,8 +100,8 @@ public class DataBaseTest {
         Assertions.assertTrue(lastId < newEmployee.getId(), "Id passed");
         Assertions.assertEquals(newEmployee.getName(), eFTarget.getName(), "Name passed");
         Assertions.assertEquals(newEmployee.getPosition(), eFTarget.getPosition(), "Position passed");
-        Assertions.assertTrue(newEmployee.getSalary() == eFTarget.getSalary(), "Salary passed");
-        Assertions.assertTrue(newEmployee.getAge() == eFTarget.getAge(), "Age passed");
+        Assertions.assertEquals(newEmployee.getSalary(), eFTarget.getSalary(), "Salary passed");
+        Assertions.assertEquals(newEmployee.getAge(), eFTarget.getAge(), "Age passed");
     }
 
     @Test
@@ -115,28 +115,13 @@ public class DataBaseTest {
     public void deleteTest(int idSearch, boolean result){
         Employee employeeSearch = dataBase.findById(idSearch);
         Assertions.assertEquals(result, dataBase.delete(employeeSearch) == idSearch);
-        DataUtil.printListColumn(employees);
-
     }
+
     @ParameterizedTest
     @MethodSource("dataForDeleteNullSearch")
     public void deleteNullTest(int idSearch) {
         Employee employeeSearch = dataBase.findById(idSearch);
         Assertions.assertThrows(NullPointerException.class, () -> dataBase.delete(employeeSearch));
-    }
-
-    public static Stream<Arguments> dataForDeleteSearch() {
-        List<Arguments> out = new ArrayList<>();
-        out.add(Arguments.arguments(7, true));
-
-        return out.stream();
-    }
-
-    public static Stream<Arguments> dataForDeleteNullSearch() {
-        List<Arguments> out = new ArrayList<>();
-        out.add(Arguments.arguments(99, false));
-
-        return out.stream();
     }
 
 
@@ -233,6 +218,22 @@ public class DataBaseTest {
 
         return out.stream();
     }
+
+    public static Stream<Arguments> dataForDeleteSearch() {
+        List<Arguments> out = new ArrayList<>();
+        out.add(Arguments.arguments(7, true));
+
+        return out.stream();
+    }
+
+    public static Stream<Arguments> dataForDeleteNullSearch() {
+        List<Arguments> out = new ArrayList<>();
+        out.add(Arguments.arguments(99, false));
+
+        return out.stream();
+    }
+
+
 
     private static List<Employee> setEmployeesListForTest() {
         List<Employee> employees1 = new ArrayList<>();
